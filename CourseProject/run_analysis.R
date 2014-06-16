@@ -100,19 +100,24 @@ rm(XTrain)
 ## for each measurement in the mereged X data 
 ###############################################################################
 
-# 1. get the column names from the features.txt file
-
 setwd(courseProjDir) # need to reset to Course Project Directory so relative
                      # paths are correct
 
-# Read the features.txt file from the directory 
+###############################################################################
+# Read the features.txt file to get the column names
+###############################################################################
 
 featuresFile <-"./data/UCI HAR Dataset/features.txt"
 features <- read.table(featuresFile, header = FALSE)
 
+###############################################################################
+## Determine which columns contain the mean() or standard deviation std()
+###############################################################################
 
-# 2. Determine which columns contains the mean and standard deviation
+colIndex<-grep("mean\\(\\)|std\\(\\)",features$V2)
 
-table( features[2] %in% c("mean","std")) # something like this
+###############################################################################
+# Extract those columns from X object
+###############################################################################
 
-# 3. Extract those columns
+ XSubset<-X[,colIndex]
