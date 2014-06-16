@@ -27,26 +27,27 @@ required data.  The GetData.R script does the following
         * Writes the current time and date into that file
         * unzips the .zip archive in the ./data directory
         
-2. Merges the training and the test sets to create one data set.
- 
-  The training set is held in the directory with relative path
-    "./data/UCI HAR Dataset/train"
-  
-  The test set is held in the directory with relative path
-    "./data/UCI HAR Dataset/test"
-
-  The files are :
-  
-  The row number acts as an index between the following three files:
-  
-  train/subject_train.txt - Each row identifies the subject who performed 
-       the activity for each window sample. Its range is from 1 to 30. 
-  train/y_train.txt - Training labels ie. each row contains a label 
-       for the activity undertaken by the subject in the window 
-       sample
-  train/X_train.txt - each row contains the 561 feature vector for 
-    the corresponding window sample for the subject in the corresponding
-    row in subject_train.txt performing the activity stated in the 
-    corresponding row in y_train.txt
-    
-    
+2. The run_analysis.R script merges the training and the test sets to create one data set as follows.
+    -  The original training set is held in the directory with 
+    relative path "./data/UCI HAR Dataset/train". This contains the
+    following files: 
+        * subject_train.txt - In this, each row identifies the 
+        subject who performed the activity in the window sample
+        corresponding to that row. Its range of possible values 
+        is from 1 to 30. 
+        * y_train.txt - Here, each row contains a label for the 
+        activity undertaken by the subject in the 
+        window sample corresponding to that row. 
+        * X_train.txt - each row contains the 561 feature vector
+        for a window sample. This is the window sample for the
+        subject in the corresponding row in subject_train.txt
+        performing the activity stated in the corresponding row 
+        in y_train.txt.
+    - The original test set is held in the directory with relative
+    path "./data/UCI HAR Dataset/test". This contains the
+    corresponding subject, y and X files for the test data, that 
+    is: 
+      * subject_test.txt
+      * y_test.txt
+      * X_test.txt
+Within run_analysis.R, these training and test files are each read into an R object. The subject_test and subject_train data  are then combined into a new R object where the test data appear first. The same process occurs for the    

@@ -22,8 +22,8 @@
 ## Set path on home PC
 ###############################################################################
 
-setwd(
-    "C://Terry-R-stuff//Coursera-R//GettingAndCleaningData//GettingCleaningData//CourseProject")
+# setwd(
+#    "C://Terry-R-stuff//Coursera-R//GettingAndCleaningData//GettingCleaningData//CourseProject")
 
 ###############################################################################
 ## Create directory to hold the data
