@@ -111,13 +111,49 @@ featuresFile <-"./data/UCI HAR Dataset/features.txt"
 features <- read.table(featuresFile, header = FALSE)
 
 ###############################################################################
-## Determine which columns contain the mean() or standard deviation std()
+## Determine which columns in the feature vector 
+## contain the mean() or standard deviation std()
 ###############################################################################
 
 colIndex<-grep("mean\\(\\)|std\\(\\)",features$V2)
 
 ###############################################################################
-# Extract those columns from X object
+## Extract these columns from the all the feature vectors 
+## stored in the X object
 ###############################################################################
 
  XSubset<-X[,colIndex]
+
+###############################################################################
+## Convert the activity labels in the subject object to descriptive 
+## activity names from the activity_labels.txt file.
+###############################################################################
+
+activityLabelsFile <-"./data/UCI HAR Dataset/activity_labels.txt"
+activityLabels <- read.table(activityLabelsFile, header = FALSE)
+
+labelname <- function(labelnum, activityLabels){
+  activityLabels[activityLabels$V1 == labelnum,]$V2
+} 
+
+# Add a new column to the subject object
+subject["Id"]<-NA
+for (i in 1:nrow(subject)){
+  subject$Id[i] <- i
+}
+
+subject["Activity"]<-NA
+for (i in 1:nrow(subject)){
+  subject$Activity[i] <- labelname(subject$V1[i], activityLabels)
+}
+
+
+###############################################################################
+# Combine the columns with the subject and y objects
+###############################################################################
+
+# before combining confirm that XSubset, y and subject all 
+# have the same number of rows so that there are no
+# recycling issues.
+
+tidydata <- cbind(subject, y, XSubset)
