@@ -10,15 +10,15 @@
 ## Set the working directory on home PC
 ###############################################################################
 
-#courseProjDir <- 
-#    "C://Terry-R-stuff//Coursera-R//GettingAndCleaningData//GettingCleaningData//CourseProject"
+courseProjDir <- 
+    "C://Terry-R-stuff//Coursera-R//GettingAndCleaningData//GettingCleaningData//CourseProject"
 
 ###############################################################################
 ## Set the working directory on laptop
 ###############################################################################
 
-courseProjDir <- 
-  "C://Terry-Programming//Coursera//GettingCleaningData//CourseProject"
+#courseProjDir <- 
+#  "C://Terry-Programming//Coursera//GettingCleaningData//CourseProject"
 
 setwd(courseProjDir)
     
@@ -78,7 +78,7 @@ setwd(courseProjDir) # need to reset to Course Project Directory so relative
 ##    and test data
 ## 2. Extract the mean and standard deviation.
 ##
-## 2. Creating a single R object containing the merged subject, y and X
+## 3. Creating a single R object containing the merged subject, y and X
 ##    data.
 ## 3. Add the column names 
 ###############################################################################
@@ -91,26 +91,56 @@ y <- rbind(yTest, yTrain)
 rm(yTest)
 rm(yTrain)
 
+###############################################################################
+## Merge subject and y so that each row corresponds to a person performing
+## an acivity. Give the columns a descriptive name.
+###############################################################################
+
+subjectActivity <- data.frame(PersonId = subject$V1, Activity = y$V1)
+
+###############################################################################
+## Convert the activity labels in the subject object to descriptive 
+## activity names from the activity_labels.txt file.
+###############################################################################
+
+activityLabelsFile <-"./data/UCI HAR Dataset/activity_labels.txt"
+activityLabels <- read.table(activityLabelsFile, header = FALSE)
+
+labelname <- function(labelnum, activityLabels){
+    activityLabels[activityLabels$V1 == labelnum,]$V2
+} 
+##############################################################################
+## Add a new column to Subject Activity to contain the descriptive name
+## of the activity label. Populate this with the descriptive name
+##############################################################################
+
+subjectActivity["Name"]<-NA
+
+for (i in 1:nrow(subjectActivity)){
+    subjectActivity$Name[i] <- 
+        as.character(
+            labelname(subjectActivity$Activity[i], activityLabels)
+        )
+}
+
+##############################################################################
+# Merge the X data
+##############################################################################
+
 X <- rbind(XTest, XTrain)
 rm(XTest)
 rm(XTrain)
 
 ###############################################################################
-## Extract only the measurements on the mean and standard deviation 
-## for each measurement in the mereged X data 
-###############################################################################
-
-setwd(courseProjDir) # need to reset to Course Project Directory so relative
-                     # paths are correct
-
-###############################################################################
-# Read the features.txt file to get the column names
+# Read the features.txt file to get the column names for the X data
 ###############################################################################
 
 featuresFile <-"./data/UCI HAR Dataset/features.txt"
 features <- read.table(featuresFile, header = FALSE)
 
 ###############################################################################
+## Extract only the measurements on the mean and standard deviation 
+## for each measurement in the mereged X data.
 ## Determine which columns in the feature vector 
 ## contain the mean() or standard deviation std()
 ###############################################################################
@@ -122,30 +152,9 @@ colIndex<-grep("mean\\(\\)|std\\(\\)",features$V2)
 ## stored in the X object
 ###############################################################################
 
- XSubset<-X[,colIndex]
+XSubset<-X[,colIndex]
 
-###############################################################################
-## Convert the activity labels in the subject object to descriptive 
-## activity names from the activity_labels.txt file.
-###############################################################################
 
-activityLabelsFile <-"./data/UCI HAR Dataset/activity_labels.txt"
-activityLabels <- read.table(activityLabelsFile, header = FALSE)
-
-labelname <- function(labelnum, activityLabels){
-  activityLabels[activityLabels$V1 == labelnum,]$V2
-} 
-
-# Add a new column to the subject object
-subject["Id"]<-NA
-for (i in 1:nrow(subject)){
-  subject$Id[i] <- i
-}
-
-subject["Activity"]<-NA
-for (i in 1:nrow(subject)){
-  subject$Activity[i] <- labelname(subject$V1[i], activityLabels)
-}
 
 
 ###############################################################################
@@ -156,4 +165,4 @@ for (i in 1:nrow(subject)){
 # have the same number of rows so that there are no
 # recycling issues.
 
-tidydata <- cbind(subject, y, XSubset)
+tidydata <- data.frame(PersonId=subject, Activity=y, XSubset)
