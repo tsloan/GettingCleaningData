@@ -148,21 +148,32 @@ features <- read.table(featuresFile, header = FALSE)
 colIndex<-grep("mean\\(\\)|std\\(\\)",features$V2)
 
 ###############################################################################
-## Extract these columns from the all the feature vectors 
-## stored in the X object
+## Extract these columns and their corresponding column names from all the 
+## feature vectors stored in the X object and the features object
 ###############################################################################
 
 XSubset<-X[,colIndex]
 
+XColnames<-as.character(features$V2[colIndex])
 
-
+names(XSubset) <- XColnames
 
 ###############################################################################
-# Combine the columns with the subject and y objects
+## Combine the extracted columns with the subject and y objects
 ###############################################################################
 
-# before combining confirm that XSubset, y and subject all 
-# have the same number of rows so that there are no
-# recycling issues.
+tidydata <- data.frame(subjectActivity, XSubset)
 
-tidydata <- data.frame(PersonId=subject, Activity=y, XSubset)
+###############################################################################
+## Creates a second, independent tidy data set with the average of each 
+## variable for each activity and each subject. 
+###############################################################################
+
+# sp<-split(iris$Sepal.Width,iris$Species)
+# spAvg<-lapply(sp,mean)
+
+for (i in 4:ncol(tidydata)){
+    split(tidydata$PersonId==1, tidydata$Name)
+}
+
+
