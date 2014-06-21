@@ -77,10 +77,9 @@ setwd(courseProjDir) # need to reset to Course Project Directory so relative
 ##    the merging is the same across the R objects holding the training
 ##    and test data
 ## 2. Extract the mean and standard deviation.
-##
 ## 3. Creating a single R object containing the merged subject, y and X
 ##    data.
-## 3. Add the column names 
+## 4. Add the column names 
 ###############################################################################
 
 subject <- rbind(subjectTest, subjectTrain)
@@ -110,7 +109,7 @@ labelname <- function(labelnum, activityLabels){
     activityLabels[activityLabels$V1 == labelnum,]$V2
 } 
 ##############################################################################
-## Add a new column to Subject Activity to contain the descriptive name
+## Add a new column to SubjectActivity to contain the descriptive name
 ## of the activity label. Populate this with the descriptive name
 ##############################################################################
 
@@ -167,13 +166,57 @@ tidydata <- data.frame(subjectActivity, XSubset)
 ###############################################################################
 ## Creates a second, independent tidy data set with the average of each 
 ## variable for each activity and each subject. 
+## Note in tidydata
+## column 1 = PersonId (Number 1 to 30)
+## column 2 = Activity (Number 1 to 6)
+## column 3 = Descriptive Name of Activity in column 2
+## columns 3 to ncol(tidydata) = those columns from the feature vector 
+##            whose name contains either the string "mean()" or "std()"
 ###############################################################################
 
 # sp<-split(iris$Sepal.Width,iris$Species)
 # spAvg<-lapply(sp,mean)
 
-for (i in 4:ncol(tidydata)){
-    split(tidydata$PersonId==1, tidydata$Name)
+# mean(iris[iris$Species == "setosa",]$Sepal.Width
+# isp<-split(iris[,2],iris$Species)
+#mean(temp[temp$Activity == 4,]$Activity)
+#mean(temp[temp$Activity == 4,]$Activity)
+
+
+###############################################################################
+## Fill the second tidy data set with the averages of each mean() and
+## std() variable for each activity and each subject. 
+###############################################################################
+
+NSUBJECTS <- 30 # the nmber of subjects as specified in the original data
+NACTIVITIES <- 6 # the number of activities as specified in the original data
+offset <- 3 # for the first columns of tidydata
+nAverages <- length(XColnames)
+for (i in 1:NSUBJECTS){
+    temp<-tidydata[tidydata$PersonId==i,]    
+    for (j in 1:NACTIVITIES){
+       averages<- rep(NA, nAverages) # initialise a vector to 
+                                     # hold the averages
+       for (k in 1:nAverages){ 
+           averages[k] <- mean(temp[temp$Activity==j,][,offset+k])     
+       }
+       tmpRow <- c(i,j,
+                   as.character(labelname(j, activityLabels)),
+                   averages)
+       rm(averages)
+       print(tmpRow)
+       if (i ==1 & j==1){
+           rows<-tmpRow
+       }
+       else{
+           rbind(rows,tmpRow)
+       }
+       rm(tmpRow)
+    }
 }
 
+print(rows)
+
+
+#tidydata[order(tidydata$PersonId,tidy$Activity)]
 
