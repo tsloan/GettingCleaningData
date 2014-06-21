@@ -10,15 +10,15 @@
 ## Set the working directory on home PC
 ###############################################################################
 
-#courseProjDir <- 
-#    "C://Terry-R-stuff//Coursera-R//GettingAndCleaningData//GettingCleaningData//CourseProject"
+courseProjDir <- 
+    "C://Terry-R-stuff//Coursera-R//GettingAndCleaningData//GettingCleaningData//CourseProject"
 
 ###############################################################################
 ## Set the working directory on laptop
 ###############################################################################
 
-courseProjDir <- 
-  "C://Terry-Programming//Coursera//GettingCleaningData//CourseProject"
+#courseProjDir <- 
+#  "C://Terry-Programming//Coursera//GettingCleaningData//CourseProject"
 
 setwd(courseProjDir)
     
@@ -242,13 +242,13 @@ names(tidy2df) <- tidy2Colnames
 ## Write out tidy2df as a file
 ###############################################################################
 
-tidy2dataFile <- "tidy2data.csv"
+tidy2dataFile <- "tidy2data.txt"
 if (file.exists(tidy2dataFile)){
   file.remove(tidy2dataFile)
 }
 
 tidy2dataFileCon<-file(tidy2dataFile,"w")
-write.table(tidy2df,tidy2dataFileCon,sep=",", row.names=FALSE)
+write.table(tidy2df,tidy2dataFileCon,sep=" ", row.names=FALSE)
 close(tidy2dataFileCon)
 
 
