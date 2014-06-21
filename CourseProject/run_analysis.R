@@ -10,15 +10,15 @@
 ## Set the working directory on home PC
 ###############################################################################
 
-courseProjDir <- 
-    "C://Terry-R-stuff//Coursera-R//GettingAndCleaningData//GettingCleaningData//CourseProject"
+#courseProjDir <- 
+#    "C://Terry-R-stuff//Coursera-R//GettingAndCleaningData//GettingCleaningData//CourseProject"
 
 ###############################################################################
 ## Set the working directory on laptop
 ###############################################################################
 
-#courseProjDir <- 
-#  "C://Terry-Programming//Coursera//GettingCleaningData//CourseProject"
+courseProjDir <- 
+  "C://Terry-Programming//Coursera//GettingCleaningData//CourseProject"
 
 setwd(courseProjDir)
     
@@ -74,9 +74,9 @@ setwd(courseProjDir) # need to reset to Course Project Directory so relative
 ## Create a single dataset by 
 ## 1. Merging the training and test data from the corresponding 
 ##    subject, y and X files. When doing this you must ensure the order of 
-##    the merging is the same across the R objects holding the training
+##    the merging order is the same across the R objects holding the training
 ##    and test data
-## 2. Extract the mean and standard deviation.
+## 2. Extracting the mean and standard deviation.
 ## 3. Creating a single R object containing the merged subject, y and X
 ##    data.
 ## 4. Add the column names 
@@ -164,9 +164,7 @@ names(XSubset) <- XColnames
 tidydata <- data.frame(subjectActivity, XSubset)
 
 ###############################################################################
-## Creates a second, independent tidy data set with the average of each 
-## variable for each activity and each subject. 
-## Note in tidydata
+## tidydata has the following contents:
 ## column 1 = PersonId (Number 1 to 30)
 ## column 2 = Activity (Number 1 to 6)
 ## column 3 = Descriptive Name of Activity in column 2
@@ -174,23 +172,31 @@ tidydata <- data.frame(subjectActivity, XSubset)
 ##            whose name contains either the string "mean()" or "std()"
 ###############################################################################
 
-# sp<-split(iris$Sepal.Width,iris$Species)
-# spAvg<-lapply(sp,mean)
-
-# mean(iris[iris$Species == "setosa",]$Sepal.Width
-# isp<-split(iris[,2],iris$Species)
-#mean(temp[temp$Activity == 4,]$Activity)
-#mean(temp[temp$Activity == 4,]$Activity)
-
-
 ###############################################################################
-## Fill the second tidy data set with the averages of each mean() and
-## std() variable for each activity and each subject. 
+## Write out tidydata as a file
 ###############################################################################
 
-NSUBJECTS <- 1 # the nmber of subjects as specified in the original data
-NACTIVITIES <- 6 # the number of activities as specified in the original data
-offset <- 3 # for the first columns of tidydata
+tidydataFile <- "tidydata.csv"
+if (file.exists(tidydataFile)){
+  file.remove(tidydataFile)
+}
+
+tidydataFileCon<-file(tidydataFile,"w")
+write.table(tidydata,tidydataFileCon,sep=",", row.names=FALSE)
+close(tidydataFileCon)
+
+###############################################################################
+## From the tidydata data frame create a second, independent tidy data set 
+## with the average of each variable for each activity and each subject. 
+###############################################################################
+
+NSUBJECTS <- 30   # the nmber of subjects (people) as specified in the 
+                  # original input data
+NACTIVITIES <- 6  # the number of activities as specified in the 
+                  # original data
+offset <- 3       # for the first columns of tidydata being the PersonId,
+                  # Activty and Name.
+
 nAverages <- length(XColnames)
 for (i in 1:NSUBJECTS){
     temp<-tidydata[tidydata$PersonId==i,]    
@@ -204,7 +210,6 @@ for (i in 1:NSUBJECTS){
                    as.character(labelname(j, activityLabels)),
                    averages)
        rm(averages)
-       print(tmpRow)
        if (i ==1 & j==1){
            tidy2<-tmpRow
        }
@@ -217,10 +222,35 @@ for (i in 1:NSUBJECTS){
     }
 }
 
-#need to remove the row nams from the 
+###############################################################################
+## Construct the column names for the tidy2 averages
+###############################################################################
 
-print("**************Here's tidy2")
-print(head(tidy2))
+# construct the column names for the averages
+avgColnames <- rep(NA,nAverages)
+for (i in 1:nAverages){
+  avgColnames[i] <- paste("Average-",XColnames[i],sep="")
+}
+tidy2Colnames <- c("PersonId", "Activity","Name", avgColnames)
+
+## Make tidy2 a data fram and add the columns
+
+tidy2df<-data.frame(tidy2,row.names=NULL)
+names(tidy2df) <- tidy2Colnames
+
+###############################################################################
+## Write out tidy2df as a file
+###############################################################################
+
+tidy2dataFile <- "tidy2data.csv"
+if (file.exists(tidy2dataFile)){
+  file.remove(tidy2dataFile)
+}
+
+tidy2dataFileCon<-file(tidy2dataFile,"w")
+write.table(tidy2df,tidy2dataFileCon,sep=",", row.names=FALSE)
+close(tidy2dataFileCon)
+
 
 ##############################################################################
 ## End of run_analysis.R
