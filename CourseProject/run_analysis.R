@@ -188,7 +188,7 @@ tidydata <- data.frame(subjectActivity, XSubset)
 ## std() variable for each activity and each subject. 
 ###############################################################################
 
-NSUBJECTS <- 30 # the nmber of subjects as specified in the original data
+NSUBJECTS <- 1 # the nmber of subjects as specified in the original data
 NACTIVITIES <- 6 # the number of activities as specified in the original data
 offset <- 3 # for the first columns of tidydata
 nAverages <- length(XColnames)
@@ -206,17 +206,22 @@ for (i in 1:NSUBJECTS){
        rm(averages)
        print(tmpRow)
        if (i ==1 & j==1){
-           rows<-tmpRow
+           tidy2<-tmpRow
        }
        else{
-           rbind(rows,tmpRow)
+           rows<-tidy2
+           tidy2<-rbind(rows,tmpRow)
+           rm(rows)
        }
        rm(tmpRow)
     }
 }
 
-print(rows)
+#need to remove the row nams from the 
 
+print("**************Here's tidy2")
+print(head(tidy2))
 
-#tidydata[order(tidydata$PersonId,tidy$Activity)]
-
+##############################################################################
+## End of run_analysis.R
+##############################################################################
