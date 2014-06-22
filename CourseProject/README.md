@@ -15,7 +15,7 @@ This directory contains the following files
    and places it in the ./data subdirectory and then unzips it. See the script
    file for more information on how it works.
  - README.md : this file
- - run_Analysis.R : the R script that takes the input data, previously
+ - run_analysis.R : the R script that takes the input data, previously
    downloaded and unzip'ed by GetData.R, and manipulates it as per 
    project instructions to create the tidydata.csv and tidy2data.txt files.
    See the script file itself for more information on how it works.
