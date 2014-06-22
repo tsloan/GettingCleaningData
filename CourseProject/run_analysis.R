@@ -1,20 +1,65 @@
 ##############################################################################
 ## 
 ## run_analysis.R: This script does the following:
+##   - assumes this UCI HAR Samsung training and test data are located
+##     contained in the sub-directories  ./data/UCI HAR Dataset/train
+##     and ./data/UCI HAR Dataset/test, respectively, of the 
+##     working directory.  (For the purposes of the course project, the script
+##     sets the working directory to an appropriate one on the script author's
+##     available machines. These can be commented out as appropriate.)
+##   - Merges the training files 
+##         subject_train.txt
+##         y_train.txt
+##         X_train.txt
+##     and the test files 
+##         subject_test.txt
+##         y_test.txt
+##         X_test.txt     
+##     to create one data set.
+##   - Extracts only the measurements on the mean and standard deviation 
+##     for each measurement from the merged training and testing data. This is
+##     done by examining the ./data/UCI HAR Dataset/features.txt and
+##     extracting those fields those that contain the strings "mean()" or
+##     "std()" in their names.  These fields are then extracted from the
+##     merged data.
+##   - Uses the activity labels from 
+##         ./data/UCI HAR Dataset/activity_labels.txt
+##     to create descriptive activity names to name the activities in the
+##     merged data set
+##   - Labels the data set with descriptive variable names, the field names
+##     for the "mean()" and "std()" are the same as their names in 
+##     ./data/UCI HAR Dataset/features.txt
+##   - This merged data set is written out to file called "tidydata.csv" in the
+##     working directory.  The data is written in a comman separated variable
+##     (i.e. csv) format. This data set is tidy since it has descriptive
+##     variable names and one observation per row.
+##   - This finally creates a creates a second, independent tidy data set 
+##     with the average of each "mean()" and "std()" field for each activity 
+##     and each subject. 
+##   - The names of the "mean()" and "std" fields in this second tidy dataset
+##     are the same as in the first tidy data set but with the prefix 
+##     "Average-"
+##   - This second tidy data set is written to the working directory as a 
+##     space delimited file called "tidy2data.txt". This format and
+##     naming convention is used to ensure that it can be uploaded to 
+##     the Coursera site for marking.
 ##
-##  
+##   Author: T Sloan
+##   Date: 22nd June 2014
 ##
 ##############################################################################
 
 ###############################################################################
-## Set the working directory on home PC
+## Set the working directory on script author's home PC
+## Comment out as appropriate
 ###############################################################################
 
 courseProjDir <- 
     "C://Terry-R-stuff//Coursera-R//GettingAndCleaningData//GettingCleaningData//CourseProject"
 
 ###############################################################################
-## Set the working directory on laptop
+## Set the working directory on script author's laptop
+## Comment out as appropriate
 ###############################################################################
 
 #courseProjDir <- 
@@ -233,7 +278,7 @@ for (i in 1:nAverages){
 }
 tidy2Colnames <- c("PersonId", "Activity","Name", avgColnames)
 
-## Make tidy2 a data fram and add the columns
+## Make tidy2 a data frame and add the columns
 
 tidy2df<-data.frame(tidy2,row.names=NULL)
 names(tidy2df) <- tidy2Colnames
