@@ -1,10 +1,31 @@
 README.md
 =========
 
-This directory contains my workings for the Course Project of 
-the Coursera Getting And Cleaning Data Course.
+This directory contains the author's Course Project for the Coursera Getting 
+And Cleaning Data Course June 2014.
 
-Here's the project instructions reformatted by me to identify the key items 
+This directory contains the following files 
+ - Codebook.md : the codebook that explains the format and content of the 
+   tidy2data.txt and tidydata.csv files
+ - data : a subdirectory containing the input data for the project as specified 
+   in the project instructions.This has been downloaded from
+  https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
+   as per the project instructions.
+ - GetData.R : an R script that downloads the input data for the project 
+   and places it in the ./data subdirectory and then unzips it. See the script
+   file for more information on how it works.
+ - README.md : this file
+ - run_Analysis.R : the R script that takes the input data, previously
+   downloaded and unzip'ed by GetData.R, and manipulates it as per 
+   project instructions to create the tidydata.csv and tidy2data.txt files.
+   See the script file itself for more information on how it works.
+ - tidydata.csv : the first of the two tidy data sets created by 
+   run_analysis.R.  Codebook.md explains the format and content of this file.
+ - tidy2data.txt : the second of the two tidy data sets created by 
+   run_analysis.R.  Codebook.md explains the format and content of this file.
+
+Here's the Course Project instructions reformatted slightly by this author 
+to identify the items.
 
 > The purpose of this project is to demonstrate your ability to collect, work with, and clean a data set. 
 >The goal is to prepare tidy data that can be used for later analysis. You will be graded by your peers on a series of yes/no questions related to the project. You will be required to submit: 
@@ -34,9 +55,8 @@ Here's the project instructions reformatted by me to identify the key items
 > 4.  Appropriately labels the data set with descriptive variable names. 
 > 5. Creates a second, independent tidy data set with the average of each variable for each activity and each subject. 
 
-The following steps have been followed to complete this Course Project and 
-produce the required items.
-
+END OF README.md
+================
 
 
 
