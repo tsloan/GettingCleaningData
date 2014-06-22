@@ -116,15 +116,9 @@ setwd(courseProjDir) # need to reset to Course Project Directory so relative
                      # paths are correct
 
 ###############################################################################
-## Create a single dataset by 
-## 1. Merging the training and test data from the corresponding 
-##    subject, y and X files. When doing this you must ensure the order of 
-##    the merging order is the same across the R objects holding the training
-##    and test data
-## 2. Extracting the mean and standard deviation.
-## 3. Creating a single R object containing the merged subject, y and X
-##    data.
-## 4. Add the column names 
+## Merging the test and training from the corresponding subject and y 
+## files. When doing this you must ensure the order of the merging order 
+## is the same across the R objects holding the training and test data
 ###############################################################################
 
 subject <- rbind(subjectTest, subjectTrain)
@@ -168,7 +162,7 @@ for (i in 1:nrow(subjectActivity)){
 }
 
 ##############################################################################
-# Merge the X data
+# Merge the X data from the test and training data
 ##############################################################################
 
 X <- rbind(XTest, XTrain)
@@ -204,6 +198,7 @@ names(XSubset) <- XColnames
 
 ###############################################################################
 ## Combine the extracted columns with the subject and y objects
+## to create the first tidy dataset
 ###############################################################################
 
 tidydata <- data.frame(subjectActivity, XSubset)
@@ -232,10 +227,11 @@ close(tidydataFileCon)
 
 ###############################################################################
 ## From the tidydata data frame create a second, independent tidy data set 
-## with the average of each variable for each activity and each subject. 
+## that contains the average of each mean() and std() variable for each 
+## unique activity and subject (PersonId) pair. 
 ###############################################################################
 
-NSUBJECTS <- 30   # the nmber of subjects (people) as specified in the 
+NSUBJECTS <- 30   # the number of subjects (people) as specified in the 
                   # original input data
 NACTIVITIES <- 6  # the number of activities as specified in the 
                   # original data
@@ -282,6 +278,18 @@ tidy2Colnames <- c("PersonId", "Activity","Name", avgColnames)
 
 tidy2df<-data.frame(tidy2,row.names=NULL)
 names(tidy2df) <- tidy2Colnames
+
+###############################################################################
+## tidy2df has the following contents:
+## column 1 = PersonId (Number 1 to 30)
+## column 2 = Activity (Number 1 to 6)
+## column 3 = Descriptive Name of Activity in column 2
+## columns 3 to ncol(tidy2df) = for each PersonId doing each activity, 
+##        the average (ie mean) value of the corresponding tidydata 
+##        mean() and std() values.
+##        
+###############################################################################
+
 
 ###############################################################################
 ## Write out tidy2df as a file
