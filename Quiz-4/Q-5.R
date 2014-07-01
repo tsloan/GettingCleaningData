@@ -39,4 +39,14 @@ print(paste("Number of values collected in 2012 is ",nrow(amzn2012)))
 # How many values were collected on Mondays in 2012?
 ##############################################################################
 
+dates<-index(amzn2012) # extract the list of dates from the xts object index
 
+nMondays <- 0 # initialise the count of the Mondays
+
+for (i in 1:length(dates)){
+  if (weekdays(dates[i]) == "Monday")
+  {nMondays <- nMondays + 1 }
+}
+
+print(paste("The number of Mondays in 2012, the data were collected on is ",
+      nMondays))
